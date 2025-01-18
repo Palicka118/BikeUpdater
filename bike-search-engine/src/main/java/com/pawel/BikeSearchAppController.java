@@ -7,6 +7,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.geometry.Pos;
+import javafx.scene.input.MouseEvent;
+import javafx.event.EventHandler;
+import java.awt.Desktop;
+import java.net.URI;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -124,6 +129,7 @@ public class BikeSearchAppController {
                 VBox itemBox = new VBox();
                 itemBox.setSpacing(10);
                 itemBox.setPrefSize(180, 300); // Uniform size for all listings
+                itemBox.setAlignment(Pos.CENTER); // Center the content
 
                 // Create ImageView for the picture
                 @SuppressWarnings("unchecked")
@@ -155,6 +161,19 @@ public class BikeSearchAppController {
                 Label mileageLabel = new Label((String) item.get("mileage"));
                 mileageLabel.setStyle("-fx-text-fill: #fff;"); // Set text color to white
                 itemBox.getChildren().add(mileageLabel);
+
+                // Add click event to open URL
+                String url = (String) item.get("url");
+                itemBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        try {
+                            Desktop.getDesktop().browse(new URI(url));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
                 gridPane.add(itemBox, col, row);
 
