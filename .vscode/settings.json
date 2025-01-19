@@ -1,4 +1,6 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "maven.view": "flat"
+    "maven.view": "flat",
+    "python.analysis.inlayHints.callArgumentNames": "all",
+    "python.defaultInterpreterPath": "py"
 }

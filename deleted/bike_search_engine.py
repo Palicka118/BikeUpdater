@@ -11,7 +11,7 @@ kawasaki = ["kawasaki-zx-6r-ninja", "kawasaki-zx-10r-ninja", "kawasaki-er-6f", "
 suzuki = ["suzuki-gsx-8r", "suzuki-gsx-r-1000", "suzuki-gsx-r-1100","suzuki-gsx-r-1300-hayabusa", "suzuki-gsx-r-600", "suzuki-gsx-r-750", "suzuki-gsx-s1000"]
 bmw = ["bmw-s-1000-rr"]
 triumph = ["triumph-daytona-660", "triumph-daytona-675"]
-aprilia = ["aprilia-rs-660", "aprilia-rsv-4", "aprilia-rsv-4-factory", "aprilia-rsv-4-rf", "aprilia-rsv-4-rr", "aprilia-rsv-4-1100-factory", "aprilia-rsv-4-1100-rr", "aprilia-rsv-4-1100-rf"]
+aprilia = ["aprilia-rs-660", "aprilia-rsv4", "aprilia-rsv4-factory", "aprilia-rsv4-rf", "aprilia-rsv4-rr", "aprilia-rsv4-1100-factory", "aprilia-rsv4-1100-rr", "aprilia-rsv4-1100-rf"]
 honda = ["honda-cbr-600rr", "honda-cbr-650r", "honda-cbr-1000rr-fireblade", "honda-cbr-500-r"]
 ducati = ["ducati-1098", "ducati-1098-s", "ducati-1198", "ducati-1198-s", "ducati-1199-panigale", "ducati-1299-panigale", "ducati-750-sport", "ducati-848", "ducati-848-evo", "ducati-851", "ducati-959-panigale", "ducati-996", "ducati-998", "ducati-panigale-v2", "ducati-panigale-v4", "ducati-panigale-v4-r", "ducati-streetfighter-1098-s", "ducati-streetfighter-848-s", "ducati-streetfighter-v2", "ducati-streetfighter-v4", "ducati-streetfighter-v4-s", "ducati-supersport"]
 JSONdata = []
@@ -35,6 +35,23 @@ def save(name, make, url, price, year, mileage, image_url):
     data = {"name": name, "url": url, "price": price, "year": year, "mileage": mileage, "image_url": image_url, "make": make}
     JSONdata.append(data)
 
+def process_listing(rows, i, make, model):
+    try:
+        image_url = rows.nth(i).locator("div.thumb img").get_attribute("src")
+        name = rows.nth(i).locator("div.description h3").text_content().strip()
+
+        price_value = rows.nth(i).locator('td:has-text("Kč")')
+        if price_value.count() > 0:
+            price_value = price_value.text_content().strip()
+
+        year_value = rows.nth(i).locator('p:has-text("Ročník:") strong').first.text_content().strip()
+        mileage_locator = rows.nth(i).locator('td:has-text("km")')
+        mileage_value = mileage_locator.text_content().strip() if mileage_locator.count() > 0 else "N/A"
+        url = rows.nth(i).locator("div.thumb a").get_attribute("href")
+        save(name, make, url, price_value, year_value, mileage_value, image_url)
+    except Exception as e:
+        print(f"Error processing listing {i} for model {model}: {e}")
+
 def checkMotorcycleModel(make, models, LISTSECTION, page):
     for model in models:
         try:
@@ -45,50 +62,25 @@ def checkMotorcycleModel(make, models, LISTSECTION, page):
             page.wait_for_load_state("load")
 
             rows = LISTSECTION.get_by_role("listitem")
-            count = rows.count()
-            for i in range(count):
-                try:
-                    image_url = rows.nth(i).locator("div.thumb img").get_attribute("src")
-                    name = rows.nth(i).locator("div.description h3").text_content().strip()
-
-                    price_value = rows.nth(i).locator('td:has-text("Kč")')
-                    if price_value.count() > 0:
-                        price_value = price_value.text_content().strip()
-
-                    year_value = rows.nth(i).locator('p:has-text("Ročník:") strong').first.text_content().strip()
-                    mileage_locator = rows.nth(i).locator('td:has-text("km")')
-                    if mileage_locator.count() > 0:
-                        mileage_value = mileage_locator.text_content().strip()
-                    else:
-                        mileage_value = "N/A"
-                    # Locate the photo elements and extract their src attributes
-                    url = rows.nth(i).locator("div.thumb a").get_attribute("href")
-                    save(name, make, url, price_value, year_value, mileage_value, image_url)
-                except Exception as e:
-                    print(f"Error processing listing {i} for model {model}: {e}")
-                    continue
+            for i in range(rows.count()):
+                process_listing(rows, i, make, model)
         except Exception as e:
             print(f"Error selecting model {model} for make {make}: {e}")
-            continue
 
 def checkMotorcycleMake(LISTSECTION, page):
+    make_models = {
+        "yamaha": yamaha,
+        "kawasaki": kawasaki,
+        "bmw": bmw,
+        "suzuki": suzuki,
+        "triumph": triumph,
+        "honda": honda,
+        "ducati": ducati,
+        "aprilia": aprilia
+    }
     for make in makes:
-        if make == "yamaha":
-            checkMotorcycleModel("yamaha", yamaha, LISTSECTION, page)
-        elif make == "kawasaki":
-            checkMotorcycleModel("kawasaki", kawasaki, LISTSECTION, page)
-        elif make == "bmw":
-            checkMotorcycleModel("bmw", bmw, LISTSECTION, page)
-        elif make == "suzuki":
-            checkMotorcycleModel("suzuki", suzuki, LISTSECTION, page)
-        elif make == "triumph":
-            checkMotorcycleModel("triumph", triumph, LISTSECTION, page)
-        elif make == "honda":
-            checkMotorcycleModel("honda", honda, LISTSECTION, page)
-        elif make == "ducati":
-            checkMotorcycleModel("ducati", ducati, LISTSECTION, page)
-        elif make == "aprilia":
-            checkMotorcycleModel("aprilia", aprilia, LISTSECTION, page)
+        if make in make_models:
+            checkMotorcycleModel(make, make_models[make], LISTSECTION, page)
 
 def run(playwright: Playwright) -> None:
     browser = playwright.chromium.launch(headless=False)
@@ -103,7 +95,6 @@ def run(playwright: Playwright) -> None:
     initialize_json()
     checkMotorcycleMake(LISTSECTION, page)
     finalize_json()
-    # ----------------------------------------------------------------------------
     context.close()
     browser.close()
 
