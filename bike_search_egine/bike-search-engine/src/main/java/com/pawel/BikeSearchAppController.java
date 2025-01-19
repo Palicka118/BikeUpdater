@@ -13,7 +13,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import javafx.geometry.Pos;
 
+/**
+ * Controller class for the Bike Search App.
+ * Handles the user interface interactions and data loading/displaying logic.
+ */
 public class BikeSearchAppController {
+
     @FXML
     private TextArea textArea;
 
@@ -23,23 +28,26 @@ public class BikeSearchAppController {
     @SuppressWarnings("unused")
     private Set<String> seenBikes;
 
+    /**
+     * Loads and displays motorcycles when the "Load Motorcycles" button is clicked.
+     */
     @FXML
     public void loadAndDisplayMotorcycles() {
         System.out.println("Loading and displaying motorcycles...");
         refreshData();
         loadAndDisplayMotorcycles(mainContainer);
     }
-    
+
+    /**
+     * Refreshes the data by creating the data directory and running the Python script.
+     */
     private void refreshData() {
         System.out.println("Refreshing data...");
-        createDataDirectory();
         runPythonScript();
     }
-
-    private void createDataDirectory() {
-        // ...existing code...
-    }
-
+    /**
+     * Runs the Python script to fetch motorcycle data.
+     */
     private void runPythonScript() {
         System.out.println("Running Python script...");
         try {
@@ -58,6 +66,11 @@ public class BikeSearchAppController {
         }
     }
 
+    /**
+     * Loads and displays motorcycles in the main container.
+     *
+     * @param mainContainer the main container to display the motorcycles
+     */
     public void loadAndDisplayMotorcycles(VBox mainContainer) {
         boolean hasNewBikes = false;
 
@@ -68,19 +81,18 @@ public class BikeSearchAppController {
         if (jsonData == null || jsonData.isEmpty()) {
             System.out.println("No data loaded from JSON file.");
             System.out.println("hasNewBikes: " + hasNewBikes);
-        if (!hasNewBikes) {
-            System.out.println("No new bikes found.");
-            mainContainer.getChildren().clear(); // Clear previous content
-            Label noNewBikesLabel = new Label("No new bikes");
-            noNewBikesLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #fff;");
-            noNewBikesLabel.setAlignment(Pos.CENTER);
-            mainContainer.setAlignment(Pos.CENTER);
-            mainContainer.getChildren().add(noNewBikesLabel);
-        }
+            if (!hasNewBikes) {
+                System.out.println("No new bikes found.");
+                mainContainer.getChildren().clear(); // Clear previous content
+                Label noNewBikesLabel = new Label("No new bikes");
+                noNewBikesLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #fff;");
+                noNewBikesLabel.setAlignment(Pos.CENTER);
+                mainContainer.setAlignment(Pos.CENTER);
+                mainContainer.getChildren().add(noNewBikesLabel);
+            }
             return;
         }
         System.out.println("New bikes were found.");
-
 
         mainContainer.getChildren().clear(); // Clear previous content
 
@@ -120,6 +132,9 @@ public class BikeSearchAppController {
         }
     }
 
+    /**
+     * Clears the JSON files when the "Clear memory" button is clicked.
+     */
     @FXML
     public void clearJsonFiles() {
         System.out.println("Clearing JSON files...");

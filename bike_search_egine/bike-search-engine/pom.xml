@@ -12,9 +12,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>23.0.1</maven.compiler.source>
-    <maven.compiler.target>23.0.1</maven.compiler.target>
-    <javafxversion>23.0.1</javafxversion>
+    <maven.compiler.source>23</maven.compiler.source>
+    <maven.compiler.target>23</maven.compiler.target>
+    <javafxversion>17</javafxversion>
     <scopevariable>compile</scopevariable>
   </properties>
 
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>17.0.1</version>
+            <version>${javafxversion}</version>
             <scope>${scopevariable}</scope>
         </dependency>
         <dependency>

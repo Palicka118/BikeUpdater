@@ -10,8 +10,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Utility class for data operations related to motorcycle data and seen bikes.
+ */
 public class DataUtils {
 
+    /**
+     * Loads motorcycle data from a JSON file.
+     *
+     * @param filePath the path to the JSON file
+     * @return a list of maps containing the motorcycle data
+     */
     public static List<Map<String, Object>> loadMotorcycleData(String filePath) {
         System.out.println("Loading motorcycle data from: " + filePath);
         try (FileReader reader = new FileReader(filePath)) {
@@ -25,6 +34,12 @@ public class DataUtils {
         }
     }
 
+    /**
+     * Loads seen bikes from a JSON file.
+     *
+     * @param filePath the path to the JSON file
+     * @return a set of strings containing the seen bike IDs
+     */
     public static Set<String> loadSeenBikes(String filePath) {
         System.out.println("Loading seen bikes from: " + filePath);
         try (FileReader reader = new FileReader(filePath)) {
@@ -38,6 +53,9 @@ public class DataUtils {
         }
     }
 
+    /**
+     * Clears the JSON files for motorcycle data and seen bikes.
+     */
     public static void clearJsonFiles() {
         System.out.println("Clearing JSON files...");
         try (FileWriter writer = new FileWriter("bike_search_egine/bike-search-engine/scripts/motorcycles.json")) {

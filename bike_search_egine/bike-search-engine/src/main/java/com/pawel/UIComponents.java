@@ -9,8 +9,17 @@ import java.awt.Desktop;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * Utility class for creating UI components for the Bike Search App.
+ */
 public class UIComponents {
 
+    /**
+     * Creates a VBox for a motorcycle make.
+     *
+     * @param make the make of the motorcycle
+     * @return a VBox containing the make label
+     */
     public static VBox createMakeBox(String make) {
         VBox makeBox = new VBox();
         makeBox.setSpacing(10);
@@ -23,6 +32,11 @@ public class UIComponents {
         return makeBox;
     }
 
+    /**
+     * Opens a URL in the default web browser.
+     *
+     * @param url the URL to open
+     */
     private static void openUrl(String url) {
         try {
             Desktop.getDesktop().browse(new URI(url));
@@ -31,6 +45,12 @@ public class UIComponents {
         }
     }
 
+    /**
+     * Creates a VBox for a motorcycle item.
+     *
+     * @param item a map containing the motorcycle item details
+     * @return a VBox containing the item details
+     */
     public static VBox createItemBox(Map<String, Object> item) {
         VBox itemBox = new VBox();
         itemBox.setSpacing(10);

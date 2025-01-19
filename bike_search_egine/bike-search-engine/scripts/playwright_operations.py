@@ -1,4 +1,16 @@
 from playwright.sync_api import Playwright
+"""
+This module contains functions to scrape motorcycle listings from a website using Playwright.
+Functions:
+    process_listing(rows, i, make, model):
+        Processes a single motorcycle listing and saves the details.
+    checkMotorcycleModel(make, models, LISTSECTION, page):
+        Iterates over a list of motorcycle models for a given make and processes each listing.
+    checkMotorcycleMake(LISTSECTION, page):
+        Iterates over a dictionary of motorcycle makes and their respective models, and processes each listing.
+    run(playwright: Playwright) -> None:
+        Main function to start the Playwright browser, navigate to the website, and initiate the scraping process.
+"""
 from json_operations import save
 
 yamaha = ["yamaha-yzf-r6", "yamaha-yzf-r6r", "yamaha-yzf-r1", "yamaha-yzf-r3", "yamaha-yzf-r7"]
@@ -11,6 +23,24 @@ honda = ["honda-cbr-600rr", "honda-cbr-650r", "honda-cbr-1000rr-fireblade", "hon
 ducati = ["ducati-1098", "ducati-1098-s", "ducati-1198", "ducati-1198-s", "ducati-1199-panigale", "ducati-1299-panigale", "ducati-750-sport", "ducati-848", "ducati-848-evo", "ducati-851", "ducati-959-panigale", "ducati-996", "ducati-998", "ducati-panigale-v2", "ducati-panigale-v4", "ducati-panigale-v4-r", "ducati-streetfighter-1098-s", "ducati-streetfighter-848-s", "ducati-streetfighter-v2", "ducati-streetfighter-v4", "ducati-streetfighter-v4-s", "ducati-supersport"]
 
 def process_listing(rows, i, make, model):
+    """
+    Processes a single listing from the provided rows and extracts relevant information.
+    Args:
+        rows (Locator): The Playwright locator object containing the rows of listings.
+        i (int): The index of the row to process.
+        make (str): The make of the bike.
+        model (str): The model of the bike.
+    Extracted Information:
+        - Image URL
+        - Name
+        - Price (in Kč or EUR)
+        - Year
+        - Mileage
+        - URL
+    The extracted information is then saved using the `save` function.
+    Raises:
+        Exception: If there is an error processing the listing, it prints an error message with the listing index and model.
+    """
     try:
         image_url = rows.nth(i).locator("div.thumb img").get_attribute("src")
         name = rows.nth(i).locator("div.description h3").text_content().strip()
@@ -33,6 +63,17 @@ def process_listing(rows, i, make, model):
         print(f"Error processing listing {i} for model {model}: {e}")
 
 def checkMotorcycleModel(make, models, LISTSECTION, page):
+    """
+    Selects a motorcycle make and model from dropdowns on a webpage, searches for listings, 
+    and processes each listing found.
+    Args:
+        make (str): The make of the motorcycle to select.
+        models (list): A list of motorcycle models to select.
+        LISTSECTION (Locator): The locator for the section containing the list of search results.
+        page (Page): The Playwright page object representing the browser page.
+    Raises:
+        Exception: If there is an error selecting a model or processing the listings.
+    """
     for model in models:
         try:
             page.locator("#znacka").select_option(make)
@@ -48,6 +89,16 @@ def checkMotorcycleModel(make, models, LISTSECTION, page):
             print(f"Error selecting model {model} for make {make}: {e}")
 
 def checkMotorcycleMake(LISTSECTION, page):
+    """
+    Checks the motorcycle make and calls the function to check the motorcycle model.
+
+    Args:
+        LISTSECTION (str): The section of the list to check.
+        page (playwright.sync_api.Page): The Playwright page object to interact with the web page.
+
+    Returns:
+        None
+    """
     make_models = {
         "yamaha": yamaha,
         "kawasaki": kawasaki,
@@ -62,6 +113,14 @@ def checkMotorcycleMake(LISTSECTION, page):
         checkMotorcycleModel(make, make_models[make], LISTSECTION, page)
 
 def run(playwright: Playwright) -> None:
+    """
+    Launches a Playwright browser instance, navigates to a motorcycle marketplace,
+    and performs operations to check motorcycle makes.
+    Args:
+        playwright (Playwright): The Playwright instance to use for browser automation.
+    Returns:
+        None
+    """
     print("Starting Playwright...")
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
