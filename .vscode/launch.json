@@ -1,0 +1,32 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launcher",
+            "request": "launch",
+            "mainClass": "com.pawel.Launcher",
+            "projectName": "bike-search-engine"
+        },
+        {
+            "type": "java",
+            "name": "BikeSearchApp",
+            "request": "launch",
+            "mainClass": "com.pawel.BikeSearchApp",
+            "projectName": "bike-search-engine",
+            "noDebug": false,
+            "__progressId": "4742ba39-c5a5-4359-a889-16b359977692",
+            "__origin": "internal"
+        },
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ]
+}

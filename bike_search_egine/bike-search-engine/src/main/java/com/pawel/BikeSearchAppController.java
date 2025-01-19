@@ -17,10 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -45,36 +42,21 @@ public class BikeSearchAppController {
     }
     
     private void refreshData() {
-        copyPythonScript();
+        createDataDirectory();
         runPythonScript();
     }
 
-    private void copyPythonScript() {
+    private void createDataDirectory() {
         try {
-            String externalScriptPath = "data/bike_search_engine.py";
-            File externalScriptFile = new File(externalScriptPath);
-            if (!externalScriptFile.exists()) {
-                InputStream scriptStream = getClass().getResourceAsStream("/com/pawel/bike_search_engine.py");
-                if (scriptStream == null) {
-                    throw new RuntimeException("Python script not found in resources");
-                }
-                Files.createDirectories(Paths.get("data"));
-                try (FileOutputStream outputStream = new FileOutputStream(externalScriptPath)) {
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = scriptStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                }
-            }
-        } catch (Exception e) {
+            Files.createDirectories(Paths.get("scripts"));
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void runPythonScript() {
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", "data/bike_search_engine.py");
+            ProcessBuilder pb = new ProcessBuilder("python", "bike_search_egine/bike-search-engine/scripts/bike_search_engine.py");
             pb.redirectErrorStream(true);
             Process process = pb.start();
 
@@ -90,7 +72,7 @@ public class BikeSearchAppController {
     }
 
     public void loadAndDisplayMotorcycles(VBox mainContainer) {
-        List<Map<String, Object>> jsonData = loadMotorcycleData("data/motorcycles.json");
+        List<Map<String, Object>> jsonData = loadMotorcycleData("bike_search_egine/bike-search-engine/scripts/motorcycles.json");
 
         if (jsonData == null || jsonData.isEmpty()) {
             System.out.println("No data loaded from JSON file.");
