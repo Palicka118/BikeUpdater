@@ -13,7 +13,7 @@ public class BikeSearchApp extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pawel/BikeSearchApp.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 1020, 820); // Adjust scene size for padding
+            Scene scene = new Scene(root, 1200, 900); // Adjust scene size for padding
             primaryStage.setTitle("Bike Search App");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false); // Make the window not resizable

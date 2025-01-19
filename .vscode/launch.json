@@ -12,16 +12,6 @@
             "projectName": "bike-search-engine"
         },
         {
-            "type": "java",
-            "name": "BikeSearchApp",
-            "request": "launch",
-            "mainClass": "com.pawel.BikeSearchApp",
-            "projectName": "bike-search-engine",
-            "noDebug": false,
-            "__progressId": "4742ba39-c5a5-4359-a889-16b359977692",
-            "__origin": "internal"
-        },
-        {
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",

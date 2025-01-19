@@ -28,7 +28,6 @@ def process_listing(rows, i, make, model):
         mileage_locator = rows.nth(i).locator('td:has-text("km")')
         mileage_value = mileage_locator.text_content().strip() if mileage_locator.count() > 0 else "N/A"
         url = rows.nth(i).locator("div.thumb a").get_attribute("href")
-        print(f"Saving data for listing {i} of model {model}")
         save(name, make, url, price_value, year_value, mileage_value, image_url)
     except Exception as e:
         print(f"Error processing listing {i} for model {model}: {e}")
@@ -56,7 +55,7 @@ def checkMotorcycleMake(LISTSECTION, page):
         #"suzuki": suzuki,
         "triumph": triumph,
         "honda": honda,
-        #"ducati": ducati,
+        "ducati": ducati,
         #"aprilia": aprilia
     }
     for make in make_models:
