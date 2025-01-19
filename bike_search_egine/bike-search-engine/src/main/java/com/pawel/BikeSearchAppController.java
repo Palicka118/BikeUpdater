@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import javafx.geometry.Pos;
 
 public class BikeSearchAppController {
-
     @FXML
     private TextArea textArea;
 
@@ -59,19 +58,28 @@ public class BikeSearchAppController {
     }
 
     public void loadAndDisplayMotorcycles(VBox mainContainer) {
+        boolean hasNewBikes = false;
+
         System.out.println("Loading motorcycle data from JSON...");
         List<Map<String, Object>> jsonData = DataUtils.loadMotorcycleData("bike_search_egine/bike-search-engine/scripts/motorcycles.json");
         seenBikes = DataUtils.loadSeenBikes("bike_search_egine/bike-search-engine/scripts/seen_bikes.json");
 
         if (jsonData == null || jsonData.isEmpty()) {
             System.out.println("No data loaded from JSON file.");
+            System.out.println("hasNewBikes: " + hasNewBikes);
+        if (!hasNewBikes) {
+            System.out.println("No new bikes found.");
+            mainContainer.getChildren().clear(); // Clear previous content
             Label noNewBikesLabel = new Label("No new bikes");
             noNewBikesLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #fff;");
             noNewBikesLabel.setAlignment(Pos.CENTER);
             mainContainer.setAlignment(Pos.CENTER);
             mainContainer.getChildren().add(noNewBikesLabel);
+        }
             return;
         }
+        System.out.println("New bikes were found.");
+
 
         mainContainer.getChildren().clear(); // Clear previous content
 
@@ -81,16 +89,8 @@ public class BikeSearchAppController {
 
         if (groupedData.isEmpty()) {
             System.out.println("No data grouped by make.");
-            Label noNewBikesLabel = new Label("No new bikes");
-            noNewBikesLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #fff;");
-            noNewBikesLabel.setAlignment(Pos.CENTER);
-            mainContainer.setAlignment(Pos.CENTER);
-            mainContainer.getChildren().add(noNewBikesLabel);
             return;
         }
-
-        boolean hasNewBikes = false;
-
         for (String make : groupedData.keySet()) {
             System.out.println("Processing make: " + make);
             VBox makeBox = UIComponents.createMakeBox(make);
@@ -103,11 +103,18 @@ public class BikeSearchAppController {
             int col = 0;
 
             for (Map<String, Object> item : groupedData.get(make)) {
-                VBox itemBox = UIComponents.createItemBox(item, seenBikes);
-                if (itemBox.getStyle().contains("-fx-border-color: #FFD700;")) {
-                    hasNewBikes = true;
+                String bikeId = null;
+                try {
+                    String url = (String) item.get("url");
+                    if (url != null) {
+                        bikeId = url.split("/")[url.split("/").length - 1].split("\\.")[0];
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error processing bike URL: " + e.getMessage());
                 }
+                VBox itemBox = UIComponents.createItemBox(item);
                 gridPane.add(itemBox, col, row);
+                hasNewBikes = true;
 
                 col++;
                 if (col == 5) {
@@ -119,14 +126,12 @@ public class BikeSearchAppController {
             makeBox.getChildren().add(gridPane);
             mainContainer.getChildren().add(makeBox);
         }
+    }
 
-        if (!hasNewBikes) {
-            System.out.println("No new bikes found.");
-            Label noNewBikesLabel = new Label("No new bikes");
-            noNewBikesLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #fff;");
-            noNewBikesLabel.setAlignment(Pos.CENTER);
-            mainContainer.setAlignment(Pos.CENTER);
-            mainContainer.getChildren().add(noNewBikesLabel);
-        }
+    @FXML
+    public void clearJsonFiles() {
+        System.out.println("Clearing JSON files...");
+        DataUtils.clearJsonFiles();
+        System.out.println("JSON files cleared.");
     }
 }

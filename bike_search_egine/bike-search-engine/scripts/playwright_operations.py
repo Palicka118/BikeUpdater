@@ -55,7 +55,7 @@ def checkMotorcycleMake(LISTSECTION, page):
         #"suzuki": suzuki,
         "triumph": triumph,
         "honda": honda,
-        "ducati": ducati,
+        #"ducati": ducati,
         #"aprilia": aprilia
     }
     for make in make_models:

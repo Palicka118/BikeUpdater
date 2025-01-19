@@ -3,6 +3,7 @@ package com.pawel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -35,5 +36,21 @@ public class DataUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void clearJsonFiles() {
+        System.out.println("Clearing JSON files...");
+        try (FileWriter writer = new FileWriter("bike_search_egine/bike-search-engine/scripts/motorcycles.json")) {
+            writer.write("[]");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (FileWriter writer = new FileWriter("bike_search_egine/bike-search-engine/scripts/seen_bikes.json")) {
+            writer.write("[]");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("JSON files cleared.");
     }
 }

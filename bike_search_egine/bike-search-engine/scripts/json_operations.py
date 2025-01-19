@@ -55,3 +55,13 @@ def save(name, make, url, price, year, mileage, image_url):
     data = {"name": name, "url": url, "price": price, "year": year, "mileage": mileage, "image_url": image_url, "make": make}
     JSONdata.append(data)
     seen_bikes.add(bike_id)
+    print(f"Data added: {data}")
+    print(f"Current JSONdata length: {len(JSONdata)}")
+
+def clear_json_files():
+    print("Clearing JSON files...")
+    with open(json_file_path, "w") as file:
+        file.write("[]")
+    with open(seen_bikes_file_path, "w") as file:
+        file.write("[]")
+    print("JSON files cleared.")

@@ -8,7 +8,6 @@ import javafx.scene.layout.VBox;
 import java.awt.Desktop;
 import java.net.URI;
 import java.util.Map;
-import java.util.Set;
 
 public class UIComponents {
 
@@ -32,7 +31,7 @@ public class UIComponents {
         }
     }
 
-    public static VBox createItemBox(Map<String, Object> item, Set<String> seenBikes) {
+    public static VBox createItemBox(Map<String, Object> item) {
         VBox itemBox = new VBox();
         itemBox.setSpacing(10);
         itemBox.setPrefSize(180, 300); // Uniform size for all listings
@@ -73,7 +72,7 @@ public class UIComponents {
         itemBox.getChildren().add(mileageLabel);
 
         String url = (String) item.get("url");
-        itemBox.setOnMouseClicked(event -> openUrl(url));
+        itemBox.setOnMouseClicked(_ -> openUrl(url));
 
         return itemBox;
     }
