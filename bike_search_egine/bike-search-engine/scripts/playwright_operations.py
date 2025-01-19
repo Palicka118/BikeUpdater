@@ -49,14 +49,14 @@ def checkMotorcycleModel(make, models, LISTSECTION, page):
 
 def checkMotorcycleMake(LISTSECTION, page):
     make_models = {
-        #"yamaha": yamaha,
-        #"kawasaki": kawasaki,
+        "yamaha": yamaha,
+        "kawasaki": kawasaki,
         "bmw": bmw,
-        #"suzuki": suzuki,
+        "suzuki": suzuki,
         "triumph": triumph,
         "honda": honda,
-        #"ducati": ducati,
-        #"aprilia": aprilia
+        "ducati": ducati,
+        "aprilia": aprilia
     }
     for make in make_models:
         checkMotorcycleModel(make, make_models[make], LISTSECTION, page)
