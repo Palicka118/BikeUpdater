@@ -20,6 +20,7 @@ public class BikeSearchAppController {
     @FXML
     private VBox mainContainer; // Add this line to reference the main container
 
+    @SuppressWarnings("unused")
     private Set<String> seenBikes;
 
     @FXML
@@ -103,15 +104,6 @@ public class BikeSearchAppController {
             int col = 0;
 
             for (Map<String, Object> item : groupedData.get(make)) {
-                String bikeId = null;
-                try {
-                    String url = (String) item.get("url");
-                    if (url != null) {
-                        bikeId = url.split("/")[url.split("/").length - 1].split("\\.")[0];
-                    }
-                } catch (Exception e) {
-                    System.out.println("Error processing bike URL: " + e.getMessage());
-                }
                 VBox itemBox = UIComponents.createItemBox(item);
                 gridPane.add(itemBox, col, row);
                 hasNewBikes = true;
