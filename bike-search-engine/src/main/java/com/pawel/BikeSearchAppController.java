@@ -132,10 +132,13 @@ public class BikeSearchAppController {
                 itemBox.setAlignment(Pos.CENTER); // Center the content
 
                 // Create ImageView for the picture
-                @SuppressWarnings("unchecked")
-                List<String> photos = (List<String>) item.get("photos");
-                if (!photos.isEmpty()) {
-                    ImageView imageView = new ImageView(new Image(photos.get(0)));
+                String image_url = (String) item.get("image_url");
+                if (image_url != null && !image_url.isEmpty()) {
+                    // Remove leading "//" from the URL
+                    if (image_url.startsWith("//")) {
+                        image_url = "https:" + image_url;
+                    }
+                    ImageView imageView = new ImageView(new Image(image_url));
                     imageView.setFitWidth(180);
                     imageView.setFitHeight(150); // Adjust height for labels
                     imageView.setPreserveRatio(true);
