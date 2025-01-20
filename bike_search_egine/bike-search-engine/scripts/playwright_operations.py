@@ -18,7 +18,7 @@ kawasaki = ["kawasaki-zx-6r-ninja", "kawasaki-zx-10r-ninja", "kawasaki-er-6f", "
 suzuki = ["suzuki-gsx-8r", "suzuki-gsx-r-1000", "suzuki-gsx-r-1100","suzuki-gsx-r-1300-hayabusa", "suzuki-gsx-r-600", "suzuki-gsx-r-750", "suzuki-gsx-s1000"]
 bmw = ["bmw-s-1000-rr"]
 triumph = ["triumph-daytona-660", "triumph-daytona-675"]
-aprilia = ["aprilia-rs-660", "aprilia-rsv-4", "aprilia-rsv-4-factory", "aprilia-rsv-4-rf", "aprilia-rsv-4-rr", "aprilia-rsv-4-1100-factory", "aprilia-rsv-4-1100-rr", "aprilia-rsv-4-1100-rf"]
+aprilia = ["aprilia-rs-660", "aprilia-rsv4", "aprilia-rsv4-factory", "aprilia-rsv4-rf", "aprilia-rsv4-rr", "aprilia-rsv4-1100-factory", "aprilia-rsv4-1100-rr", "aprilia-rsv4-1100-rf"]
 honda = ["honda-cbr-600rr", "honda-cbr-650r", "honda-cbr-1000rr-fireblade", "honda-cbr-500-r"]
 ducati = ["ducati-1098", "ducati-1098-s", "ducati-1198", "ducati-1198-s", "ducati-1199-panigale", "ducati-1299-panigale", "ducati-750-sport", "ducati-848", "ducati-848-evo", "ducati-851", "ducati-959-panigale", "ducati-996", "ducati-998", "ducati-panigale-v2", "ducati-panigale-v4", "ducati-panigale-v4-r", "ducati-streetfighter-1098-s", "ducati-streetfighter-848-s", "ducati-streetfighter-v2", "ducati-streetfighter-v4", "ducati-streetfighter-v4-s", "ducati-supersport"]
 

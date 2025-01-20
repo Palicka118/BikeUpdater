@@ -85,9 +85,9 @@
     </dependency>
   </dependencies>
   <properties>
-    <javafxversion>23.0.1</javafxversion>
-    <maven.compiler.target>23.0.1</maven.compiler.target>
-    <maven.compiler.source>23.0.1</maven.compiler.source>
+    <javafxversion>17</javafxversion>
+    <maven.compiler.target>23</maven.compiler.target>
+    <maven.compiler.source>23</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <scopevariable>compile</scopevariable>
   </properties>
