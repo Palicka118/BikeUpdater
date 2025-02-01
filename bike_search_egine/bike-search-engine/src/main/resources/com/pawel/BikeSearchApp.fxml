@@ -10,6 +10,7 @@
     <Label text="Motorcycle Search Results" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #fff;" />
     <Button text="Load Motorcycles" onAction="#loadAndDisplayMotorcycles" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-border-radius: 5px;" />
     <Button text="Clear memory" onAction="#clearJsonFiles" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-border-radius: 5px;" />
+    <Button text="Clear Favorites" onAction="#clearFavorites" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-border-radius: 5px;" />
     <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: #333; -fx-pref-width: 1140; -fx-pref-height: 800;">
         <VBox fx:id="mainContainer" spacing="20" style="-fx-background-color: #333; -fx-padding: 10;">
             <!-- Sections for each make will be added here dynamically -->

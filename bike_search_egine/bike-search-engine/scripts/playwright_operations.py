@@ -100,14 +100,14 @@ def checkMotorcycleMake(LISTSECTION, page):
         None
     """
     make_models = {
-        "yamaha": yamaha,
-        "kawasaki": kawasaki,
-        "bmw": bmw,
-        "suzuki": suzuki,
+        #"yamaha": yamaha,
+        #"kawasaki": kawasaki,
+        #"bmw": bmw,
+        #"suzuki": suzuki,
         "triumph": triumph,
-        "honda": honda,
-        "ducati": ducati,
-        "aprilia": aprilia
+        #"honda": honda,
+        #"ducati": ducati,
+        #"aprilia": aprilia
     }
     for make in make_models:
         checkMotorcycleModel(make, make_models[make], LISTSECTION, page)

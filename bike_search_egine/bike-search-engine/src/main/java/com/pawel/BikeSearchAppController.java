@@ -25,7 +25,6 @@ public class BikeSearchAppController {
     @FXML
     private VBox mainContainer; // Add this line to reference the main container
 
-    @SuppressWarnings("unused")
     private Set<String> seenBikes;
 
     /**
@@ -37,7 +36,7 @@ public class BikeSearchAppController {
         refreshData();
         loadAndDisplayMotorcycles(mainContainer);
     }
-
+    
     /**
      * Refreshes the data by creating the data directory and running the Python script.
      */
@@ -77,22 +76,13 @@ public class BikeSearchAppController {
         System.out.println("Loading motorcycle data from JSON...");
         List<Map<String, Object>> jsonData = DataUtils.loadMotorcycleData("bike_search_egine/bike-search-engine/scripts/motorcycles.json");
         seenBikes = DataUtils.loadSeenBikes("bike_search_egine/bike-search-engine/scripts/seen_bikes.json");
+        Set<String> favoriteBikes = DataUtils.loadFavoriteBikes("bike_search_egine/bike-search-engine/scripts/favorite_bikes.json");
 
         if (jsonData == null || jsonData.isEmpty()) {
             System.out.println("No data loaded from JSON file.");
-            System.out.println("hasNewBikes: " + hasNewBikes);
-            if (!hasNewBikes) {
-                System.out.println("No new bikes found.");
-                mainContainer.getChildren().clear(); // Clear previous content
-                Label noNewBikesLabel = new Label("No new bikes");
-                noNewBikesLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #fff;");
-                noNewBikesLabel.setAlignment(Pos.CENTER);
-                mainContainer.setAlignment(Pos.CENTER);
-                mainContainer.getChildren().add(noNewBikesLabel);
-            }
+            displayNoNewBikesMessage(mainContainer);
             return;
         }
-        System.out.println("New bikes were found.");
 
         mainContainer.getChildren().clear(); // Clear previous content
 
@@ -102,8 +92,10 @@ public class BikeSearchAppController {
 
         if (groupedData.isEmpty()) {
             System.out.println("No data grouped by make.");
+            displayNoNewBikesMessage(mainContainer);
             return;
         }
+
         for (String make : groupedData.keySet()) {
             System.out.println("Processing make: " + make);
             VBox makeBox = UIComponents.createMakeBox(make);
@@ -116,29 +108,61 @@ public class BikeSearchAppController {
             int col = 0;
 
             for (Map<String, Object> item : groupedData.get(make)) {
-                VBox itemBox = UIComponents.createItemBox(item);
-                gridPane.add(itemBox, col, row);
-                hasNewBikes = true;
+                String bikeId = ((String) item.get("url")).split("/")[((String) item.get("url")).split("/").length - 1].split("\\.")[0];
+                System.out.println("Checking bike: " + item.get("name") + " with ID: " + bikeId);
+                if (!seenBikes.contains(bikeId) || favoriteBikes.contains(bikeId)) {
+                    System.out.println("New bike found: " + item.get("name"));
+                    VBox itemBox = UIComponents.createItemBox(item);
+                    gridPane.add(itemBox, col, row);
+                    hasNewBikes = true;
 
-                col++;
-                if (col == 5) {
-                    col = 0;
-                    row++;
+                    // Add bike to seen bikes after displaying
+                    seenBikes.add(bikeId);
+
+                    col++;
+                    if (col == 5) {
+                        col = 0;
+                        row++;
+                    }
+                } else {
+                    System.out.println("Bike already seen: " + item.get("name"));
                 }
             }
 
             makeBox.getChildren().add(gridPane);
             mainContainer.getChildren().add(makeBox);
         }
+
+        System.out.println("hasNewBikes: " + hasNewBikes);
+        if (!hasNewBikes) {
+            displayNoNewBikesMessage(mainContainer);
+        }
+
+        // Save seen bikes to file
+        DataUtils.saveSeenBikes(seenBikes);
     }
 
-    /**
-     * Clears the JSON files when the "Clear memory" button is clicked.
-     */
+    private void displayNoNewBikesMessage(VBox mainContainer) {
+        System.out.println("No new bikes found.");
+        mainContainer.getChildren().clear(); // Clear previous content
+        Label noNewBikesLabel = new Label("No new bikes");
+        noNewBikesLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: #fff;");
+        noNewBikesLabel.setAlignment(Pos.CENTER);
+        mainContainer.setAlignment(Pos.CENTER);
+        mainContainer.getChildren().add(noNewBikesLabel);
+    }
+
     @FXML
     public void clearJsonFiles() {
         System.out.println("Clearing JSON files...");
         DataUtils.clearJsonFiles();
         System.out.println("JSON files cleared.");
+    }
+
+    @FXML
+    public void clearFavorites() {
+        System.out.println("Clearing favorite bikes...");
+        DataUtils.clearFavorites();
+        System.out.println("Favorite bikes cleared.");
     }
 }

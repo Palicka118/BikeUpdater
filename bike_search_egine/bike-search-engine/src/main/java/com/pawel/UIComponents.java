@@ -1,18 +1,24 @@
 package com.pawel;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseButton;
 import java.awt.Desktop;
 import java.net.URI;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Utility class for creating UI components for the Bike Search App.
  */
 public class UIComponents {
+
+    private static Set<String> favoriteBikes = DataUtils.loadFavoriteBikes("bike_search_egine/bike-search-engine/scripts/favorite_bikes.json");
 
     /**
      * Creates a VBox for a motorcycle make.
@@ -46,6 +52,68 @@ public class UIComponents {
     }
 
     /**
+     * Adds a bike to the favorites list and removes it from the seen bikes file.
+     *
+     * @param bikeId the unique identifier of the bike
+     * @param itemBox the VBox containing the motorcycle item details
+     * @param item a map containing the motorcycle item details
+     */
+    private static void addToFavorites(String bikeId, VBox itemBox, Map<String, Object> item) {
+        favoriteBikes.add(bikeId);
+        itemBox.setStyle("-fx-border-color: yellow; -fx-border-width: 2px;");
+        System.out.println("Bike " + bikeId + " added to favorites.");
+        DataUtils.addToFavorites(bikeId, item);
+    }
+
+    /**
+     * Removes a bike from the favorites list.
+     *
+     * @param bikeId the unique identifier of the bike
+     * @param itemBox the VBox containing the motorcycle item details
+     */
+    private static void removeFromFavorites(String bikeId, VBox itemBox) {
+        favoriteBikes.remove(bikeId);
+        itemBox.setStyle(null); // Remove the yellow border
+        System.out.println("Bike " + bikeId + " removed from favorites.");
+        DataUtils.removeFromFavorites(bikeId);
+    }
+
+    /**
+     * Creates a context menu for a motorcycle item.
+     *
+     * @param item a map containing the motorcycle item details
+     * @param itemBox the VBox containing the motorcycle item details
+     * @return a ContextMenu with options for the item
+     */
+    private static ContextMenu createContextMenu(Map<String, Object> item, VBox itemBox) {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem openLink = new MenuItem("Open Link");
+        openLink.setOnAction(event -> openUrl((String) item.get("url")));
+
+        MenuItem copyLink = new MenuItem("Copy Link");
+        copyLink.setOnAction(event -> {
+            String url = (String) item.get("url");
+            java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new java.awt.datatransfer.StringSelection(url), null);
+        });
+
+        String bikeId = ((String) item.get("url")).split("/")[((String) item.get("url")).split("/").length - 1].split("\\.")[0];
+        MenuItem favorite = new MenuItem(favoriteBikes.contains(bikeId) ? "Unfavorite" : "Favorite");
+        favorite.setOnAction(event -> {
+            if (favoriteBikes.contains(bikeId)) {
+                removeFromFavorites(bikeId, itemBox);
+                favorite.setText("Favorite");
+            } else {
+                addToFavorites(bikeId, itemBox, item);
+                favorite.setText("Unfavorite");
+            }
+        });
+
+        contextMenu.getItems().addAll(openLink, copyLink, favorite);
+        return contextMenu;
+    }
+
+    /**
      * Creates a VBox for a motorcycle item.
      *
      * @param item a map containing the motorcycle item details
@@ -56,6 +124,11 @@ public class UIComponents {
         itemBox.setSpacing(10);
         itemBox.setPrefSize(180, 300); // Uniform size for all listings
         itemBox.setAlignment(Pos.CENTER); // Center the content
+
+        String bikeId = ((String) item.get("url")).split("/")[((String) item.get("url")).split("/").length - 1].split("\\.")[0];
+        if (favoriteBikes.contains(bikeId)) {
+            itemBox.setStyle("-fx-border-color: yellow; -fx-border-width: 2px;");
+        }
 
         // Create ImageView for the picture
         String image_url = (String) item.get("image_url");
@@ -92,7 +165,14 @@ public class UIComponents {
         itemBox.getChildren().add(mileageLabel);
 
         String url = (String) item.get("url");
-        itemBox.setOnMouseClicked(_ -> openUrl(url));
+        itemBox.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                openUrl(url);
+            } else if (event.getButton() == MouseButton.SECONDARY) {
+                ContextMenu contextMenu = createContextMenu(item, itemBox);
+                contextMenu.show(itemBox, event.getScreenX(), event.getScreenY());
+            }
+        });
 
         return itemBox;
     }

@@ -4,8 +4,10 @@ import os
 
 json_file_path = os.path.join("bike_search_egine/bike-search-engine/scripts/motorcycles.json")
 seen_bikes_file_path = os.path.join("bike_search_egine/bike-search-engine/scripts/seen_bikes.json")
+favorite_bikes_file_path = os.path.join("bike_search_egine/bike-search-engine/scripts/favorite_bikes.json")
 JSONdata = []
 seen_bikes = set()
+favorite_bikes = set()
 
 def initialize_json():
     """
@@ -40,7 +42,18 @@ def initialize_json():
         open(seen_bikes_file_path, "w").close()
         print(f"Seen bikes file created: {seen_bikes_file_path}")
 
-
+    if os.path.exists(favorite_bikes_file_path):
+        try:
+            with open(favorite_bikes_file_path, "r") as file:
+                global favorite_bikes
+                favorite_bikes = set(json.load(file))
+            print(f"Favorite bikes loaded from {favorite_bikes_file_path}")
+        except json.JSONDecodeError:
+            favorite_bikes = set()
+            print(f"Favorite bikes file is empty or invalid, initializing empty set.")
+    else:
+        open(favorite_bikes_file_path, "w").close()
+        print(f"Favorite bikes file created: {favorite_bikes_file_path}")
 
 def finalize_json():
     """
@@ -67,9 +80,9 @@ def finalize_json():
             file.write(json.dumps(JSONdata, indent=4))
         print(f"Data saved to {json_file_path}")
 
-        with open(seen_bikes_file_path, "w") as file:
-            json.dump(list(seen_bikes), file, indent=4)
-        print(f"Seen bikes saved to {seen_bikes_file_path}")
+        with open(favorite_bikes_file_path, "w") as file:
+            json.dump(list(favorite_bikes), file, indent=4)
+        print(f"Favorite bikes saved to {favorite_bikes_file_path}")
     except Exception as e:
         print(f"Error saving data to {json_file_path}: {e}")
 
@@ -90,13 +103,12 @@ def save(name, make, url, price, year, mileage, image_url):
         None
     """
     bike_id = url.split("/")[-1].split(".")[0]  # Extract a unique identifier from the URL
-    if bike_id in seen_bikes:
-        print(f"Bike {bike_id} already seen, skipping.")
-        return
+    #if bike_id in seen_bikes:
+    #    print(f"Bike {bike_id} already seen, skipping.")
+    #    return
 
     data = {"name": name, "url": url, "price": price, "year": year, "mileage": mileage, "image_url": image_url, "make": make}
     JSONdata.append(data)
-    seen_bikes.add(bike_id)
     print(f"Data added: {data}")
     print(f"Current JSONdata length: {len(JSONdata)}")
 
@@ -114,5 +126,7 @@ def clear_json_files():
     with open(json_file_path, "w") as file:
         file.write("[]")
     with open(seen_bikes_file_path, "w") as file:
+        file.write("[]")
+    with open(favorite_bikes_file_path, "w") as file:
         file.write("[]")
     print("JSON files cleared.")
