@@ -1,0 +1,7 @@
+{
+  "java.jdt.ls.vmargs": "-XX:+UseG1GC -XX:+UseStringDeduplication --enable-native-access=javafx.graphics --add-opens=java.base/sun.misc=javafx.graphics",
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java",
+    "editor.formatOnSave": true
+  }
+}

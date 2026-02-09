@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javafx.geometry.Pos;
 
 /**
@@ -50,7 +52,16 @@ public class BikeSearchAppController {
     private void runPythonScript() {
         System.out.println("Running Python script...");
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", "bike_search_egine/bike-search-engine/scripts/main.py");
+            // Resolve the correct path to main.py
+            String scriptPath = "scripts/main.py";
+            if (Files.exists(Paths.get("bike-search-engine/scripts/main.py"))) {
+                scriptPath = "bike-search-engine/scripts/main.py";
+            } else if (!Files.exists(Paths.get("scripts/main.py"))) {
+                System.err.println("Python script not found at either scripts/main.py or bike-search-engine/scripts/main.py");
+                return;
+            }
+            
+            ProcessBuilder pb = new ProcessBuilder("python", scriptPath);
             pb.redirectErrorStream(true);
             Process process = pb.start();
 
@@ -74,9 +85,9 @@ public class BikeSearchAppController {
         boolean hasNewBikes = false;
 
         System.out.println("Loading motorcycle data from JSON...");
-        List<Map<String, Object>> jsonData = DataUtils.loadMotorcycleData("bike_search_egine/bike-search-engine/scripts/motorcycles.json");
-        seenBikes = DataUtils.loadSeenBikes("bike_search_egine/bike-search-engine/scripts/seen_bikes.json");
-        Set<String> favoriteBikes = DataUtils.loadFavoriteBikes("bike_search_egine/bike-search-engine/scripts/favorite_bikes.json");
+        List<Map<String, Object>> jsonData = DataUtils.loadMotorcycleData("scripts/motorcycles.json");
+        seenBikes = DataUtils.loadSeenBikes("scripts/seen_bikes.json");
+        Set<String> favoriteBikes = DataUtils.loadFavoriteBikes("scripts/favorite_bikes.json");
 
         if (jsonData == null || jsonData.isEmpty()) {
             System.out.println("No data loaded from JSON file.");

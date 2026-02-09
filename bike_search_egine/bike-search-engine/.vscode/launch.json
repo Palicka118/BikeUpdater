@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launcher",
+      "request": "launch",
+      "mainClass": "com.pawel.Launcher",
+      "projectName": "bike-search-engine",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "vmArgs": "--enable-native-access=javafx.graphics --add-opens=java.base/sun.misc=javafx.graphics"
+    }
+  ]
+}

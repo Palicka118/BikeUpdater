@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public class UIComponents {
 
-    private static Set<String> favoriteBikes = DataUtils.loadFavoriteBikes("bike_search_egine/bike-search-engine/scripts/favorite_bikes.json");
+    private static Set<String> favoriteBikes = DataUtils.loadFavoriteBikes("scripts/favorite_bikes.json");
 
     /**
      * Creates a VBox for a motorcycle make.

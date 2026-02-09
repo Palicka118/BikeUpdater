@@ -1,10 +1,14 @@
 # json_operations.py
 import json
 import os
+import importlib.util
 
-json_file_path = os.path.join("bike_search_egine/bike-search-engine/scripts/motorcycles.json")
-seen_bikes_file_path = os.path.join("bike_search_egine/bike-search-engine/scripts/seen_bikes.json")
-favorite_bikes_file_path = os.path.join("bike_search_egine/bike-search-engine/scripts/favorite_bikes.json")
+# Get the directory where this script is located
+SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
+
+json_file_path = os.path.join(SCRIPTS_DIR, "motorcycles.json")
+seen_bikes_file_path = os.path.join(SCRIPTS_DIR, "seen_bikes.json")
+favorite_bikes_file_path = os.path.join(SCRIPTS_DIR, "favorite_bikes.json")
 JSONdata = []
 seen_bikes = set()
 favorite_bikes = set()
@@ -20,40 +24,50 @@ def initialize_json():
     4. Creates the seen bikes file if it does not exist.
     Prints status messages to indicate the progress of initialization.
     """
-    print("Initializing JSON files...")
-    directory = os.path.dirname(json_file_path)
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    if os.path.exists(json_file_path):
-        os.remove(json_file_path)
-    open(json_file_path, "w").close()
-    print(f"File initialized: {json_file_path}")
+    print("Initializing JSON files (delegating to init_data)...")
+    # Try to reuse the init_data helper in the same scripts directory to ensure
+    # files exist and contain valid JSON ([]). This avoids duplicating file-creation logic.
+    try:
+        # local import when running inside scripts package or same directory
+        from init_data import create_if_missing
+    except Exception:
+        # fallback: load module by path
+        init_path = os.path.join(os.path.dirname(__file__), "init_data.py")
+        spec = importlib.util.spec_from_file_location("init_data", init_path)
+        init_mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(init_mod)
+        create_if_missing = getattr(init_mod, "create_if_missing")
 
+    # Ensure files exist and contain valid JSON defaults
+    try:
+        create_if_missing(os.path.dirname(__file__))
+    except Exception as e:
+        print(f"init_data.create_if_missing failed: {e}")
+
+    # Load seen and favorite bikes (safe because init created valid JSON files)
     if os.path.exists(seen_bikes_file_path):
         try:
-            with open(seen_bikes_file_path, "r") as file:
+            with open(seen_bikes_file_path, "r", encoding="utf-8") as file:
                 global seen_bikes
-                seen_bikes = set(json.load(file))
+                seen_bikes = set(json.load(file) or [])
             print(f"Seen bikes loaded from {seen_bikes_file_path}")
         except json.JSONDecodeError:
             seen_bikes = set()
-            print(f"Seen bikes file is empty or invalid, initializing empty set.")
+            print("Seen bikes file is invalid, initializing empty set.")
     else:
-        open(seen_bikes_file_path, "w").close()
-        print(f"Seen bikes file created: {seen_bikes_file_path}")
+        print(f"Seen bikes file missing after init: {seen_bikes_file_path}")
 
     if os.path.exists(favorite_bikes_file_path):
         try:
-            with open(favorite_bikes_file_path, "r") as file:
+            with open(favorite_bikes_file_path, "r", encoding="utf-8") as file:
                 global favorite_bikes
-                favorite_bikes = set(json.load(file))
+                favorite_bikes = set(json.load(file) or [])
             print(f"Favorite bikes loaded from {favorite_bikes_file_path}")
         except json.JSONDecodeError:
             favorite_bikes = set()
-            print(f"Favorite bikes file is empty or invalid, initializing empty set.")
+            print("Favorite bikes file is invalid, initializing empty set.")
     else:
-        open(favorite_bikes_file_path, "w").close()
-        print(f"Favorite bikes file created: {favorite_bikes_file_path}")
+        print(f"Favorite bikes file missing after init: {favorite_bikes_file_path}")
 
 def finalize_json():
     """
