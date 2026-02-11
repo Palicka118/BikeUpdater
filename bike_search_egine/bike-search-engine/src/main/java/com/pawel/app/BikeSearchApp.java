@@ -1,4 +1,4 @@
-package com.pawel;
+package com.pawel.app;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

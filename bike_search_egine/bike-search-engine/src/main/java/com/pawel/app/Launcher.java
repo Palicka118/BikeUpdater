@@ -1,4 +1,4 @@
-package com.pawel;
+package com.pawel.app;
 
 /**
  * Launcher class for the Bike Search App.
