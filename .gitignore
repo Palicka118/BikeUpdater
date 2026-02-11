@@ -1,0 +1,31 @@
+# Java
+target/
+*.jar
+*.class
+
+# IntelliJ
+.idea/
+*.iml
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs/data (if generated)
+*.log
+data/*.json
+
+bike_search_egine/bike-search-engine/target/classes/com/pawel/UIComponents.class
+bike_search_egine/bike-search-engine/target/classes/com/pawel/BikeSearchAppController.class
