@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseButton;
+
 import java.awt.Desktop;
 import java.net.URI;
 import java.util.Map;
@@ -54,9 +55,9 @@ public class UIComponents {
     /**
      * Adds a bike to the favorites list and removes it from the seen bikes file.
      *
-     * @param bikeId the unique identifier of the bike
+     * @param bikeId  the unique identifier of the bike
      * @param itemBox the VBox containing the motorcycle item details
-     * @param item a map containing the motorcycle item details
+     * @param item    a map containing the motorcycle item details
      */
     private static void addToFavorites(String bikeId, VBox itemBox, Map<String, Object> item) {
         favoriteBikes.add(bikeId);
@@ -68,7 +69,7 @@ public class UIComponents {
     /**
      * Removes a bike from the favorites list.
      *
-     * @param bikeId the unique identifier of the bike
+     * @param bikeId  the unique identifier of the bike
      * @param itemBox the VBox containing the motorcycle item details
      */
     private static void removeFromFavorites(String bikeId, VBox itemBox) {
@@ -81,7 +82,7 @@ public class UIComponents {
     /**
      * Creates a context menu for a motorcycle item.
      *
-     * @param item a map containing the motorcycle item details
+     * @param item    a map containing the motorcycle item details
      * @param itemBox the VBox containing the motorcycle item details
      * @return a ContextMenu with options for the item
      */

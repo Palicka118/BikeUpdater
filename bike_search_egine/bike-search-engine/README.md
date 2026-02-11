@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Bike Search Engine is a JavaFX application that allows users to search for motorcycle listings from a specified website. The application uses Playwright for web scraping and JSON for data storage. The user interface is built using JavaFX, and the application is packaged and managed using Maven.
+The Bike Search Engine is a JavaFX application that allows users to search for motorcycle listings from a specified
+website. The application uses Playwright for web scraping and JSON for data storage. The user interface is built using
+JavaFX, and the application is packaged and managed using Maven.
 
 ## Features
 
@@ -38,11 +40,14 @@ The Bike Search Engine is a JavaFX application that allows users to search for m
 
 ### Prerequisites
 
-1. **Java Development Kit (JDK)**: Ensure you have JDK 23 or higher installed. You can download it from [Oracle's website](https://www.oracle.com/java/technologies/javase-jdk23-downloads.html).
+1. **Java Development Kit (JDK)**: Ensure you have JDK 23 or higher installed. You can download it
+   from [Oracle's website](https://www.oracle.com/java/technologies/javase-jdk23-downloads.html).
 
-2. **Apache Maven**: Ensure you have Maven installed. You can download it from [Maven's website](https://maven.apache.org/download.cgi).
+2. **Apache Maven**: Ensure you have Maven installed. You can download it
+   from [Maven's website](https://maven.apache.org/download.cgi).
 
-3. **Python**: Ensure you have Python 3.13 or higher installed. You can download it from [Python's website](https://www.python.org/downloads/).
+3. **Python**: Ensure you have Python 3.13 or higher installed. You can download it
+   from [Python's website](https://www.python.org/downloads/).
 
 4. **Playwright**: Install Playwright using pip:
    ```sh
@@ -53,6 +58,7 @@ The Bike Search Engine is a JavaFX application that allows users to search for m
 ### Clone the Repository
 
 Clone the repository to your local machine:
+
 ```sh
 git clone https://github.com/palicka118/bike-search-engine.git
 cd bike-search-engine
@@ -61,6 +67,7 @@ cd bike-search-engine
 ### Build the Project
 
 Navigate to the project directory and build the project using Maven:
+
 ```sh
 mvn clean install
 ```
@@ -68,11 +75,13 @@ mvn clean install
 ### Initialize Data Files
 
 The application automatically initializes required JSON data files on startup. You can also manually initialize them:
+
 ```sh
 python scripts/init_data.py
 ```
 
 This creates:
+
 - `scripts/motorcycles.json` (empty list)
 - `scripts/seen_bikes.json` (empty list)
 - `scripts/favorite_bikes.json` (empty list)
@@ -80,15 +89,18 @@ This creates:
 ### Run the Application
 
 #### Using Maven (Recommended)
+
 ```sh
 mvn javafx:run
 ```
 
 #### Using IDE
+
 - Open the project in VS Code or your IDE
 - Click **Run** or **Debug** on the `Launcher` class
 
 #### Using Java Directly
+
 ```sh
 cd bike-search-engine
 java -cp target/classes com.pawel.Launcher
@@ -97,6 +109,7 @@ java -cp target/classes com.pawel.Launcher
 ## Running Tests
 
 Run unit tests using Maven:
+
 ```sh
 mvn test
 ```
@@ -140,6 +153,7 @@ bike-search-engine/
 ### pom.xml Improvements
 
 The `pom.xml` has been optimized with:
+
 - **Centralized version properties** for easy version management
 - **Maven Compiler Plugin 3.10.1** using `<release>${java.version}</release>`
 - **Maven Enforcer Plugin** to ensure correct Java version is used
@@ -149,16 +163,19 @@ The `pom.xml` has been optimized with:
 ### JavaFX Warnings
 
 The application may show warnings about deprecated native methods:
+
 ```
 WARNING: A restricted method in java.lang.System has been called
 WARNING: sun.misc.Unsafe::allocateMemory has been called
 ```
 
-These are non-fatal warnings from JavaFX/JDK internals and do not affect functionality. They are suppressed when running via Maven (`mvn javafx:run`).
+These are non-fatal warnings from JavaFX/JDK internals and do not affect functionality. They are suppressed when running
+via Maven (`mvn javafx:run`).
 
 ### Path Resolution
 
 The application intelligently resolves file paths to work regardless of the working directory:
+
 - Checks both `scripts/` and `bike-search-engine/scripts/` for data files
 - Automatically uses the correct path found
 - Falls back to defaults if files don't exist yet (they'll be created by `init_data.py`)
@@ -179,16 +196,21 @@ The application intelligently resolves file paths to work regardless of the work
 ## Troubleshooting
 
 ### Maven not found
+
 Install Maven or add it to your system PATH.
 
 ### Python script not found
+
 Ensure you're running from the project root directory, or use the full path:
+
 ```sh
 python bike-search-engine/scripts/main.py
 ```
 
 ### FileNotFoundException for JSON files
+
 Run the initialization script first:
+
 ```sh
 python scripts/init_data.py
 ```
@@ -202,7 +224,7 @@ python scripts/init_data.py
 ✅ Created data file initialization script (`init_data.py`)  
 ✅ Implemented robust path resolution for cross-platform compatibility  
 ✅ Added VS Code launch and settings configurations  
-✅ Updated test framework to use JUnit 5 Jupiter API  
+✅ Updated test framework to use JUnit 5 Jupiter API
 
 ## Contributing
 

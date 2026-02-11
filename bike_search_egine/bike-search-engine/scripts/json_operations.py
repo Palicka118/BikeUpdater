@@ -1,7 +1,7 @@
 # json_operations.py
+import importlib.util
 import json
 import os
-import importlib.util
 
 # Get the directory where this script is located
 SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -12,6 +12,7 @@ favorite_bikes_file_path = os.path.join(SCRIPTS_DIR, "favorite_bikes.json")
 JSONdata = []
 seen_bikes = set()
 favorite_bikes = set()
+
 
 def initialize_json():
     """
@@ -69,6 +70,7 @@ def initialize_json():
     else:
         print(f"Favorite bikes file missing after init: {favorite_bikes_file_path}")
 
+
 def finalize_json():
     """
     Finalizes and saves JSON data to specified file paths.
@@ -101,7 +103,6 @@ def finalize_json():
         print(f"Error saving data to {json_file_path}: {e}")
 
 
-
 def save(name, make, url, price, year, mileage, image_url):
     """
     Save bike information to a JSON-like structure if the bike hasn't been seen before.
@@ -117,15 +118,15 @@ def save(name, make, url, price, year, mileage, image_url):
         None
     """
     bike_id = url.split("/")[-1].split(".")[0]  # Extract a unique identifier from the URL
-    #if bike_id in seen_bikes:
+    # if bike_id in seen_bikes:
     #    print(f"Bike {bike_id} already seen, skipping.")
     #    return
 
-    data = {"name": name, "url": url, "price": price, "year": year, "mileage": mileage, "image_url": image_url, "make": make}
+    data = {"name": name, "url": url, "price": price, "year": year, "mileage": mileage, "image_url": image_url,
+            "make": make}
     JSONdata.append(data)
     print(f"Data added: {data}")
     print(f"Current JSONdata length: {len(JSONdata)}")
-
 
 
 def clear_json_files():

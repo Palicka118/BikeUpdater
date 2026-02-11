@@ -15,7 +15,6 @@ import os
 import sys
 from typing import Any, Dict
 
-
 BASE_DIR = os.path.dirname(__file__)
 
 DEFAULTS: Dict[str, Any] = {

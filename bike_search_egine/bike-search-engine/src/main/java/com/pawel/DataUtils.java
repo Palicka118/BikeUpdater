@@ -2,6 +2,7 @@ package com.pawel;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -26,13 +27,13 @@ public class DataUtils {
         if (scriptFile.exists()) {
             return scriptFile.getPath();
         }
-        
+
         // Try bike-search-engine subdirectory (common when launching from parent dir)
         scriptFile = new File("bike-search-engine/scripts", filename);
         if (scriptFile.exists()) {
             return scriptFile.getPath();
         }
-        
+
         // Default to scripts/ (will be created by init_data if missing)
         return new File("scripts", filename).getPath();
     }
@@ -47,7 +48,8 @@ public class DataUtils {
         String resolvedPath = resolveScriptPath(filePath.replaceAll(".*(\\\\|/)", ""));
         System.out.println("Loading motorcycle data from: " + resolvedPath);
         try (FileReader reader = new FileReader(resolvedPath)) {
-            Type listType = new TypeToken<List<Map<String, Object>>>() {}.getType();
+            Type listType = new TypeToken<List<Map<String, Object>>>() {
+            }.getType();
             List<Map<String, Object>> data = new Gson().fromJson(reader, listType);
             System.out.println("Motorcycle data loaded: " + (data != null ? data.size() : 0) + " items");
             return data;
@@ -67,7 +69,8 @@ public class DataUtils {
         String resolvedPath = resolveScriptPath(filePath.replaceAll(".*(\\\\|/)", ""));
         System.out.println("Loading seen bikes from: " + resolvedPath);
         try (FileReader reader = new FileReader(resolvedPath)) {
-            Type setType = new TypeToken<Set<String>>() {}.getType();
+            Type setType = new TypeToken<Set<String>>() {
+            }.getType();
             Set<String> data = new Gson().fromJson(reader, setType);
             System.out.println("Seen bikes loaded: " + (data != null ? data.size() : 0) + " items");
             return data;
@@ -87,7 +90,8 @@ public class DataUtils {
         String resolvedPath = resolveScriptPath(filePath.replaceAll(".*(\\\\|/)", ""));
         System.out.println("Loading favorite bikes from: " + resolvedPath);
         try (FileReader reader = new FileReader(resolvedPath)) {
-            Type setType = new TypeToken<Set<String>>() {}.getType();
+            Type setType = new TypeToken<Set<String>>() {
+            }.getType();
             Set<String> data = new Gson().fromJson(reader, setType);
             System.out.println("Favorite bikes loaded: " + (data != null ? data.size() : 0) + " items");
             return data;
@@ -116,7 +120,7 @@ public class DataUtils {
      * Adds a bike to the favorites list and saves it to the favorite bikes file.
      *
      * @param bikeId the unique identifier of the bike
-     * @param item a map containing the motorcycle item details
+     * @param item   a map containing the motorcycle item details
      */
     public static void addToFavorites(String bikeId, Map<String, Object> item) {
         System.out.println("Adding bike " + bikeId + " to favorites.");

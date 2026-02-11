@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 /**
  * The BikeSearchApp class extends the Application class and serves as the entry point for the Bike Search App.
  * It initializes and displays the primary stage with the specified FXML layout.
- * 
+ *
  * <p>This class performs the following tasks:</p>
  * <ul>
  *   <li>Loads the FXML file for the user interface layout.</li>
@@ -18,9 +18,9 @@ import javafx.stage.Stage;
  *   <li>Makes the window non-resizable.</li>
  *   <li>Displays the primary stage.</li>
  * </ul>
- * 
+ *
  * <p>If an exception occurs during the loading of the FXML file, it is caught and the stack trace is printed.</p>
- * 
+ *
  * @see javafx.application.Application
  * @see javafx.stage.Stage
  * @see javafx.fxml.FXMLLoader
@@ -28,6 +28,15 @@ import javafx.stage.Stage;
  * @see javafx.scene.Scene
  */
 public class BikeSearchApp extends Application {
+
+    /**
+     * The main method to launch the JavaFX application.
+     *
+     * @param args command-line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     /**
      * Starts the JavaFX application.
@@ -48,14 +57,5 @@ public class BikeSearchApp extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * The main method to launch the JavaFX application.
-     *
-     * @param args command-line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
     }
 }

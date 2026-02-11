@@ -5,6 +5,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import javafx.geometry.Pos;
 
 /**
@@ -38,7 +40,7 @@ public class BikeSearchAppController {
         refreshData();
         loadAndDisplayMotorcycles(mainContainer);
     }
-    
+
     /**
      * Refreshes the data by creating the data directory and running the Python script.
      */
@@ -46,6 +48,7 @@ public class BikeSearchAppController {
         System.out.println("Refreshing data...");
         runPythonScript();
     }
+
     /**
      * Runs the Python script to fetch motorcycle data.
      */
@@ -60,7 +63,7 @@ public class BikeSearchAppController {
                 System.err.println("Python script not found at either scripts/main.py or bike-search-engine/scripts/main.py");
                 return;
             }
-            
+
             ProcessBuilder pb = new ProcessBuilder("python", scriptPath);
             pb.redirectErrorStream(true);
             Process process = pb.start();
@@ -98,8 +101,8 @@ public class BikeSearchAppController {
         mainContainer.getChildren().clear(); // Clear previous content
 
         Map<String, List<Map<String, Object>>> groupedData = jsonData.stream()
-            .filter(item -> item.get("make") != null) // Filter out items without a "make" key
-            .collect(Collectors.groupingBy(item -> (String) item.get("make")));
+                .filter(item -> item.get("make") != null) // Filter out items without a "make" key
+                .collect(Collectors.groupingBy(item -> (String) item.get("make")));
 
         if (groupedData.isEmpty()) {
             System.out.println("No data grouped by make.");

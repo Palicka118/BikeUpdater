@@ -1,4 +1,5 @@
 from playwright.sync_api import sync_playwright
+
 """This script performs web automation tasks using the Playwright library and handles JSON operations.
 Modules:
     - sync_playwright: Provides synchronous API for Playwright.
@@ -10,6 +11,7 @@ Usage:
     Run this script directly to execute the main function."""
 from json_operations import initialize_json, finalize_json
 from playwright_operations import run
+
 
 def main():
     """
@@ -27,6 +29,7 @@ def main():
         run(playwright)
     print("Finalizing JSON...")
     finalize_json()
+
 
 if __name__ == "__main__":
     print("Starting main.py...")
